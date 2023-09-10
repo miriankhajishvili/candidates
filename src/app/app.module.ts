@@ -8,11 +8,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { CandidatesDetailModule } from './candidates-detail/candidates-detail.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MainLayoutComponent } from './shared/main-layout/main-layout/main-layout.component';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
     AppComponent,
+    MainLayoutComponent,
     
   ],
   imports: [
@@ -23,7 +28,11 @@ import { FormsModule } from '@angular/forms';
     CandidatesDetailModule,
     BrowserAnimationsModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatButtonModule,
+    MatToolbarModule
     
     
   ],

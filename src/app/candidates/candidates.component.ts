@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CandidatesService } from '../core/services/candidates.service';
-import { ActivatedRoute } from '@angular/router';
+
+import {  Router } from '@angular/router';
+import { CandidatesService } from '../features/services/candidates.service';
 
 @Component({
   selector: 'app-candidates',
@@ -11,6 +12,7 @@ export class CandidatesComponent implements OnInit {
 
   constructor( 
     private candidatesService: CandidatesService,
+    private router: Router
 
     ){}
 
@@ -27,6 +29,7 @@ export class CandidatesComponent implements OnInit {
 
     this.candidatesService.deleteCandidate(id).subscribe(res => {
       console.log(res)
+      this.router.navigate(['/candidates']);
     })
 
   }

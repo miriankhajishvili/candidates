@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CandidatesService } from '../core/services/candidates.service';
+
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CandidatesService } from '../features/services/candidates.service';
 
 @Component({
   selector: 'app-candidates-detail',
@@ -13,7 +14,7 @@ export class CandidatesDetailComponent implements OnInit {
   currentCandidate!: any 
   clientStatuses : any[] = []
   skills: any[] = [] 
-
+  
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -31,14 +32,20 @@ export class CandidatesDetailComponent implements OnInit {
   })
 
   getCandidateById(id: number) {
-    this.candidatesService.getCandidateById(id).subscribe((res) => {
-      this.currentCandidate = res;
-      console.log(this.currentCandidate);
+    return this.candidatesService.getCandidateById(id).subscribe((res) => {
       this.forms.patchValue(res);
-
-
+      this.currentCandidate = res;
+  
+      // Loop through the skills and update the checkbox states
+      this.skills.forEach((skill) => {
+        if (this.currentCandidate.skillIds.includes(skill.id)) {
+          skill.checked = true;
+        }
+      });
     });
   }
+  
+
   getClientStatuses(){
    
     this.candidatesService.getClientStatuses().subscribe(res => {
@@ -53,16 +60,32 @@ export class CandidatesDetailComponent implements OnInit {
      }) 
   }
 
-ngOnInit(): void { 
-
- this.getCandidateById(this.activatedRoute.snapshot.params['id'])
- this.getClientStatuses()
- this.getSkills()
-}
+  ngOnInit(): void { 
+    this.getCandidateById(this.activatedRoute.snapshot.params['id']);
+    this.getClientStatuses();
+    this.getSkills();
+  
+    // Check the checkboxes based on skillIds from currentCandidate
+    this.forms.get('skillIds')?.valueChanges.subscribe((value) => {
+      if (this.currentCandidate) {
+        this.skills.forEach((skill) => {
+          const isChecked = value.includes(skill.id);
+          if (isChecked) {
+            skill.checked = true;
+          } else {
+            skill.checked = false;
+          }
+        });
+      }
+    });
+  }
+  
 
 
 onClickcheckBox(data: any){
   const getId = this.forms.get('skillIds') as FormArray
+
+  console.log(getId.value)
 
 
   if(data.source.checked){
@@ -78,11 +101,14 @@ onClickcheckBox(data: any){
 }
 
 
-  submit() {
-    console.log(this.forms.value);
-    this.candidatesService.addCandidate(this.forms.value).subscribe((res) => {
-      console.log(res);
-    });
-  }
+submit(){
+  console.log(this.forms.value)
+
+  this.candidatesService.addCandidate(this.forms.value).subscribe(res => {
+    console.log(res)
+  })
+  
+  
+}
 
 }

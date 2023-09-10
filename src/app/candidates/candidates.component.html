@@ -1,15 +1,14 @@
-<button [routerLink]="'add-candidates'" mat-raised-button color="primary">Create new user</button>
 
 
 <div *ngFor="let candidate of allCandidates$  |async">
     
     <div >
-         {{candidate.name}}  {{candidate.surname}}
+        <b> {{candidate.name}}  {{candidate.surname}}</b>
         <button  [routerLink]="candidate.id" mat-fab color="accent" aria-label="Example icon button with a home icon">
           <mat-icon>edit</mat-icon>
          
         </button>
-       <button  mat-fab color="accent" aria-label="Example icon button with a delete icon" (click)="onDelete(candidate.id)">
+       <button mat-fab color="warn" aria-label="Example icon button with a delete icon" (click)="onDelete(candidate.id)">
         <mat-icon>delete</mat-icon>
        </button>
 </div>

@@ -1,4 +1,5 @@
 <form  [formGroup]="forms" (submit)="submit()">
+ 
     
     <h1>{{currentCandidate?.name}}       {{currentCandidate?.surname}}</h1>
   <mat-form-field appearance="fill">
@@ -25,11 +26,17 @@
       
     </mat-form-field>
 
-   >
+ 
         <section   class="example-section">
-          <mat-checkbox 
-           (change)="onClickcheckBox($event)"  *ngFor="let skill of skills" class="example-margin"> {{skill.name}}
-          </mat-checkbox>
+
+        <mat-checkbox 
+        *ngFor="let skill of skills"
+          (change)="onClickcheckBox($event)" 
+          [value]="skill.id"
+          [checked]="currentCandidate?.skillIds.includes(skill.id)"
+          class="example-margin">
+          {{ skill.name }}
+           </mat-checkbox>
         </section>
     
           
