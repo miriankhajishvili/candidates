@@ -1,0 +1,38 @@
+<form  [formGroup]="forms" (submit)="submit()">
+    
+    <h1>{{currentCandidate?.name}}       {{currentCandidate?.surname}}</h1>
+  <mat-form-field appearance="fill">
+   
+    <input matInput placeholder="name"   formControlName="name">
+  </mat-form-field><br>
+  <mat-form-field appearance="fill">
+   
+    <input matInput placeholder="Surname"  formControlName="surname">
+  </mat-form-field><br>
+  <mat-form-field appearance="fill">
+   
+    <input type="email" matInput placeholder="Email"  formControlName="email">
+  </mat-form-field><br>
+  <mat-form-field appearance="fill">
+   
+
+        <mat-label>Choose an option</mat-label>
+        <mat-select formControlName="statusId">
+          <mat-option  [value]="status.id" *ngFor="let status of clientStatuses" >
+            {{status.name}}
+          </mat-option>
+        </mat-select>
+      
+    </mat-form-field>
+
+   >
+        <section   class="example-section">
+          <mat-checkbox 
+           (change)="onClickcheckBox($event)"  *ngFor="let skill of skills" class="example-margin"> {{skill.name}}
+          </mat-checkbox>
+        </section>
+    
+          
+          <button mat-raised-button color="primary">Submit</button>
+       
+</form>
