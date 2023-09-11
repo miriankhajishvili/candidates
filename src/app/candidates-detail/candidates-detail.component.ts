@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray,FormControl, FormGroup, Validators } from '@angular/forms';
 import { CandidatesService } from '../features/services/candidates.service';
 
 @Component({
@@ -11,104 +11,94 @@ import { CandidatesService } from '../features/services/candidates.service';
 })
 export class CandidatesDetailComponent implements OnInit {
 
-  currentCandidate!: any 
-  clientStatuses : any[] = []
-  skills: any[] = [] 
-  
+  currentCandidate!: any;
+  clientStatuses: any[] = [];
+  skills: any[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private candidatesService: CandidatesService){}
-
+    private candidatesService: CandidatesService,
+    private router: Router,
+   
+  ) {}
 
   forms: FormGroup = new FormGroup({
-    
-    name : new FormControl('', Validators.required),
+    name: new FormControl('', Validators.required),
     surname: new FormControl('', Validators.required),
-    email : new FormControl('', Validators.required),
-    statusId : new FormControl('', Validators.required),
+    email: new FormControl('', Validators.required),
+    statusId: new FormControl('', Validators.required),
     skillIds: new FormArray([]),
-
-  })
+  });
 
   getCandidateById(id: number) {
     return this.candidatesService.getCandidateById(id).subscribe((res) => {
       this.forms.patchValue(res);
       this.currentCandidate = res;
-  
-      // Loop through the skills and update the checkbox states
+    });
+  }
+
+  getClientStatuses() {
+    this.candidatesService.getClientStatuses().subscribe((res) => {
+      this.clientStatuses = res;
+    });
+  }
+
+  getSkills() {
+    this.candidatesService.getSkills().subscribe((res) => {
+      this.skills = res;
+
+      // Initialize the FormArray controls based on skills
+      const skillIdsFormArray = this.forms.get('skillIds') as FormArray;
       this.skills.forEach((skill) => {
-        if (this.currentCandidate.skillIds.includes(skill.id)) {
-          skill.checked = true;
-        }
+        skillIdsFormArray.push(new FormControl(this.currentCandidate.skillIds.includes(skill.id)));
       });
     });
   }
-  
 
-  getClientStatuses(){
-   
-    this.candidatesService.getClientStatuses().subscribe(res => {
-      this.clientStatuses = res
-
-    })
-  }
-
-  getSkills(){
-     this.candidatesService.getSkills().subscribe(res => {
-      this.skills = res
-     }) 
-  }
-
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.getCandidateById(this.activatedRoute.snapshot.params['id']);
     this.getClientStatuses();
     this.getSkills();
+  }
+
+  onClickcheckBox(skill: any, isChecked: boolean) {
+    const skillIdsFormArray = this.forms.get('skillIds') as FormArray;
+    const skillIndex = this.skills.findIndex((s) => s.id === skill.id);
   
-    // Check the checkboxes based on skillIds from currentCandidate
-    this.forms.get('skillIds')?.valueChanges.subscribe((value) => {
-      if (this.currentCandidate) {
-        this.skills.forEach((skill) => {
-          const isChecked = value.includes(skill.id);
-          if (isChecked) {
-            skill.checked = true;
-          } else {
-            skill.checked = false;
-          }
-        });
-      }
-    });
+    if (skillIndex !== -1) {
+      skillIdsFormArray.at(skillIndex).setValue(isChecked);
+    }
   }
   
-
-
-onClickcheckBox(data: any){
-  const getId = this.forms.get('skillIds') as FormArray
-
-  console.log(getId.value)
-
-
-  if(data.source.checked){
-  getId.push(new FormControl(data.source.value))
-  } else {
-   getId.controls.forEach(
-     (res : any)=> {
-       if ( res.value === data.source.value){
-         getId.removeAt(res)
-       }
-     })
+  
+  submit() {
+    const skillIdsFormArray = this.forms.get('skillIds');
+  
+    if (skillIdsFormArray) {
+      const selectedSkillIds = this.skills
+        .filter((skill, index) => skillIdsFormArray.value[index] === true)
+        .map((skill) => skill.id);
+      
+     
+      const formValues = {
+        name: this.forms.get('name')?.value,
+        surname: this.forms.get('surname')?.value,
+        email: this.forms.get('email')?.value,
+        statusId: this.forms.get('statusId')?.value,
+        skillIds: selectedSkillIds,
+      };
+    
+      console.log(formValues);
+    
+      this.candidatesService.addCandidate(formValues).subscribe((res) => {
+        console.log(res);
+      });
+    
+      this.router.navigate(['/candidates']);
+    } else {
+      console.error('skillIds FormArray is null or undefined');
+    }
   }
-}
-
-
-submit(){
-  console.log(this.forms.value)
-
-  this.candidatesService.addCandidate(this.forms.value).subscribe(res => {
-    console.log(res)
-  })
   
   
-}
-
 }

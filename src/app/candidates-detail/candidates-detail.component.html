@@ -29,17 +29,26 @@
  
         <section   class="example-section">
 
-        <mat-checkbox 
-        *ngFor="let skill of skills"
-          (change)="onClickcheckBox($event)" 
-          [value]="skill.id"
-          [checked]="currentCandidate?.skillIds.includes(skill.id)"
-          class="example-margin">
-          {{ skill.name }}
-           </mat-checkbox>
-        </section>
-    
+
+
+
+          <mat-checkbox
           
-          <button mat-raised-button color="primary">Submit</button>
+            *ngFor="let skill of skills; let i = index"
+            (change)="onClickcheckBox(skill, $event.checked)"
+            [value]="skill.id"
+            [checked]="currentCandidate?.skillIds.includes(skill.id)"
+            class="example-margin">
+
+            {{ skill.name }}
+          </mat-checkbox>
+
+        
+    
+
+ 
+
+        </section>
+          <button [value]="" mat-raised-button color="primary">Submit</button>
        
 </form>
