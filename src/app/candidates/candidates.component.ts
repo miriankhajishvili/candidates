@@ -8,29 +8,25 @@ import { CandidatesService } from '../features/services/candidates.service';
   templateUrl: './candidates.component.html',
   styleUrls: ['./candidates.component.scss']
 })
-export class CandidatesComponent implements OnInit {
+export class CandidatesComponent  {
 
   constructor( 
     private candidatesService: CandidatesService,
-    private router: Router
-
-    ){}
+    private router: Router){}
 
 
   allCandidates$ = this.candidatesService.getCandidates()
 
-  ngOnInit(): void {
-    // Fetch the initial list of candidates
-    this.allCandidates$ = this.candidatesService.getCandidates();
-  }
 
-
-  onDelete(id: any) {
-    this.candidatesService.deleteCandidate(id).subscribe(() => {
-      // After deleting, navigate back to the candidate list route
-      this.router.navigate(['/candidates']);
-    });
-  }
   
+
+  onDelete(id: any){
+
+    this.candidatesService.deleteCandidate(id).subscribe(res => {
+      console.log(res)
+      this.router.navigate(['/candidates']);
+    })
+
+  }
 
 }

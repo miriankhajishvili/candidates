@@ -17,7 +17,7 @@ const routes: Routes = [
    loadChildren: () => import('./candidates-detail/candidates-detail.module').then(m => m.CandidatesDetailModule)
    },
    {
-    path: 'add-candidates',
+    path: 'new-candidates',
     loadChildren: () => import('./candidates-detail/candidates-detail.module').then(m => m.CandidatesDetailModule)
    }
 ];

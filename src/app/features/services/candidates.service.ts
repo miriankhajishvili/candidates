@@ -1,39 +1,42 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
 import { Observable } from 'rxjs';
+import { ICandidate } from '../interfaces/icandidate';
+import { IStatus } from '../interfaces/istatus';
+import { ISkill } from '../interfaces/iskill';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CandidatesService extends BaseService {
 
-  addCandidate(data: any,): Observable<any>{
-    return this.post<any>('candidates/',data)
+  addCandidate(data: any): Observable<ICandidate[]>{
+    return this.post('candidates/',data)
     
   }
 
-  getCandidates(): Observable<any>{
-    return this.get<any>('candidates')
+  getCandidates(): Observable<ICandidate[]>{
+    return this.get('candidates')
   }
   
-  getCandidateById(id: number): Observable<any> {
-    return this.get<any>(`candidates/${id}`)
+  getCandidateById(id: number): Observable<ICandidate> {
+    return this.get(`candidates/${id}`)
     
   }
 
-  getClientStatuses() : Observable<any>{
-    return this.get<any>('client-statuses')
+  getClientStatuses() : Observable<IStatus[]>{
+    return this.get('client-statuses')
 
   }
-  getSkills() : Observable<any>{
-    return this.get<any>('skills')
+  getSkills() : Observable<ISkill[]>{
+    return this.get('skills')
   }
 
-  updateCandidate(id : number , data : any): Observable<any>{
-    return this.put<any>(`candidates/${id}`, data)
+  updateCandidate(id : number , data : any): Observable<ICandidate>{
+    return this.put(`candidates/${id}`, data)
   }
 
- deleteCandidate(id : number) : Observable<any>{
-  return this.delete<any>(`candidates/${id}`)
+ deleteCandidate(id : number) : Observable<ICandidate>{
+  return this.delete(`candidates/${id}`)
  }
 }

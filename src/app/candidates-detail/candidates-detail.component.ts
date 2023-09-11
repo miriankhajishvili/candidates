@@ -30,15 +30,18 @@ export class CandidatesDetailComponent implements OnInit {
     statusId: new FormControl('', Validators.required),
     skillIds: new FormArray([]),
   });
+
+
+
   getCandidateById(id: number) {
-    return this.candidatesService.getCandidateById(id).subscribe((res) => {
+      this.candidatesService.getCandidateById(id).subscribe((res) => {
       this.forms.patchValue(res);
       this.currentCandidate = res;
   
-      // Check if 'currentCandidate' and 'skillIds' are defined before accessing them
+     
       if (this.currentCandidate && this.currentCandidate.skillIds) {
         this.currentCandidate.skillIds.forEach((skillId: any) => {
-          // Your code to handle skillIds here
+         
         });
       }
     });
@@ -55,7 +58,7 @@ export class CandidatesDetailComponent implements OnInit {
     this.candidatesService.getSkills().subscribe((res) => {
       this.skills = res;
   
-      // Initialize the FormArray controls based on skills
+    
       const skillIdsFormArray = this.forms.get('skillIds') as FormArray;
   
       if (this.currentCandidate && this.currentCandidate.skillIds) {
@@ -63,7 +66,7 @@ export class CandidatesDetailComponent implements OnInit {
           skillIdsFormArray.push(new FormControl(this.currentCandidate.skillIds.includes(skill.id)));
         });
       } else {
-        // Handle the case when currentCandidate or skillIds is undefined
+       
         console.error("currentCandidate or skillIds is undefined");
       }
     });
@@ -100,9 +103,9 @@ export class CandidatesDetailComponent implements OnInit {
       .filter((skill, index) => skillIdsFormArray.value[index] === true)
       .map((skill) => skill.id);
   
-    // Create an object with the selected skill IDs
+ 
     const formValues = {
-      name: this.forms.get('name')?.value,
+      name: this.forms.get('name')?.value, 
       surname: this.forms.get('surname')?.value,
       email: this.forms.get('email')?.value,
       statusId: this.forms.get('statusId')?.value,
@@ -114,12 +117,13 @@ export class CandidatesDetailComponent implements OnInit {
       this.candidatesService.updateCandidate(this.activatedId, { ...formValues }).subscribe((res) => {
         console.log(res);
     
-        // Navigate to the same route to reload the page
         this.router.navigate(['/candidates']);
       });
     } else {
       this.candidatesService.addCandidate(formValues).subscribe( res => {
         console.log(res)
+
+        this.router.navigate(['/candidates']);
       })
     }
   
