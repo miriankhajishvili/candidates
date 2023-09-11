@@ -7,6 +7,7 @@ import { MatButtonModule} from '@angular/material/button';
 import { MatIconModule} from '@angular/material/icon'
 import { MatDividerModule} from '@angular/material/divider';
 import { MatDialogModule} from '@angular/material/dialog';
+import { DeleteConfirmationDialogComponent } from './detele/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 
 
@@ -16,7 +17,8 @@ import { MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
-    CandidatesComponent
+    CandidatesComponent,
+    DeleteConfirmationDialogComponent
   ],
   imports: [
     CommonModule,
