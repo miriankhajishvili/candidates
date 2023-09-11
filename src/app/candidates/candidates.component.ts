@@ -20,18 +20,17 @@ export class CandidatesComponent implements OnInit {
   allCandidates$ = this.candidatesService.getCandidates()
 
   ngOnInit(): void {
-    
+    // Fetch the initial list of candidates
+    this.allCandidates$ = this.candidatesService.getCandidates();
   }
 
 
-
-  onDelete(id: any){
-
-    this.candidatesService.deleteCandidate(id).subscribe(res => {
-      console.log(res)
+  onDelete(id: any) {
+    this.candidatesService.deleteCandidate(id).subscribe(() => {
+      // After deleting, navigate back to the candidate list route
       this.router.navigate(['/candidates']);
-    })
-
+    });
   }
+  
 
 }

@@ -14,6 +14,7 @@ export class CandidatesDetailComponent implements OnInit {
   currentCandidate!: any;
   clientStatuses: any[] = [];
   skills: any[] = [];
+  activatedId! : number
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -49,14 +50,20 @@ export class CandidatesDetailComponent implements OnInit {
 
       // Initialize the FormArray controls based on skills
       const skillIdsFormArray = this.forms.get('skillIds') as FormArray;
+
+
       this.skills.forEach((skill) => {
         skillIdsFormArray.push(new FormControl(this.currentCandidate.skillIds.includes(skill.id)));
       });
+
+      
     });
   }
 
   ngOnInit(): void {
-    this.getCandidateById(this.activatedRoute.snapshot.params['id']);
+
+    this.activatedId =this.activatedRoute.snapshot.params['id'] 
+    this.getCandidateById(this.activatedId);
     this.getClientStatuses();
     this.getSkills();
   }
@@ -74,30 +81,32 @@ export class CandidatesDetailComponent implements OnInit {
   submit() {
     const skillIdsFormArray = this.forms.get('skillIds');
   
-    if (skillIdsFormArray) {
-      const selectedSkillIds = this.skills
-        .filter((skill, index) => skillIdsFormArray.value[index] === true)
-        .map((skill) => skill.id);
-      
-     
-      const formValues = {
-        name: this.forms.get('name')?.value,
-        surname: this.forms.get('surname')?.value,
-        email: this.forms.get('email')?.value,
-        statusId: this.forms.get('statusId')?.value,
-        skillIds: selectedSkillIds,
-      };
-    
-      console.log(formValues);
-    
-      this.candidatesService.addCandidate(formValues).subscribe((res) => {
-        console.log(res);
-      });
-    
-      this.router.navigate(['/candidates']);
-    } else {
+    if (!skillIdsFormArray) {
       console.error('skillIds FormArray is null or undefined');
+      return;
     }
+  
+    const selectedSkillIds = this.skills
+      .filter((skill, index) => skillIdsFormArray.value[index] === true)
+      .map((skill) => skill.id);
+  
+    // Create an object with the selected skill IDs
+    const formValues = {
+      name: this.forms.get('name')?.value,
+      surname: this.forms.get('surname')?.value,
+      email: this.forms.get('email')?.value,
+      statusId: this.forms.get('statusId')?.value,
+      skillIds: selectedSkillIds,
+    };
+  
+    console.log(formValues);
+  
+    this.candidatesService.updateCandidate(this.activatedId, { ...formValues }).subscribe((res) => {
+      console.log(res);
+  
+      // Navigate to the same route to reload the page
+      this.router.navigate(['/candidates']);
+    });
   }
   
   

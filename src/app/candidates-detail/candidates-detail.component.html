@@ -33,10 +33,10 @@
 
 
           <mat-checkbox
-          
+
             *ngFor="let skill of skills; let i = index"
             (change)="onClickcheckBox(skill, $event.checked)"
-            [value]="skill.id"
+            [value]="skill?.id"
             [checked]="currentCandidate?.skillIds.includes(skill.id)"
             class="example-margin">
 
