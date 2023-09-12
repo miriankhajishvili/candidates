@@ -36,7 +36,7 @@ export class CandidatesService extends BaseService {
     return this.put(`candidates/${id}`, data)
   }
 
- deleteCandidate(id : number) : Observable<ICandidate>{
+ deleteCandidate(id : string) : Observable<ICandidate>{
   return this.delete(`candidates/${id}`)
  }
 }

@@ -3,7 +3,7 @@ import {  Router } from '@angular/router';
 import { CandidatesService } from '../features/services/candidates.service';
 import { of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteConfirmationDialogComponent } from './detele/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { DeleteConfirmationDialogComponent } from '../shared/main-layout/detele/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 
 
@@ -27,7 +27,7 @@ export class CandidatesComponent  {
 
   
 
-  onDelete(id: any) {
+  onDelete(id: string) {
     this.candidatesService.deleteCandidate(id).subscribe((res) => {
 
       this.candidatesService.getCandidates().subscribe((updatedCandidates) => {
@@ -45,12 +45,12 @@ export class CandidatesComponent  {
   openDeleteConfirmationDialog(candidateId: string): void {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       width: '250px',
-      data: { candidateId }, // Pass any data you need to the dialog
+      data: { candidateId },
     });
   
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        // User confirmed the delete action, perform the deletion here
+      
         this.onDelete(candidateId);
       }
     });

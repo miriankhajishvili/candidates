@@ -26,7 +26,7 @@ export class CandidatesDetailComponent implements OnInit {
   forms: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     surname: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.required),
+    email: new FormControl('', Validators.email),
     statusId: new FormControl('', Validators.required),
     skillIds: new FormArray([]),
   });
@@ -75,8 +75,14 @@ export class CandidatesDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.activatedId =this.activatedRoute.snapshot.params['id'] 
-    this.getCandidateById(this.activatedId);
+    this.activatedId =this.activatedRoute.snapshot.params['id']
+    
+    if(this.activatedId === undefined){
+      this.forms.reset()
+    } else 
+    {this.getCandidateById(this.activatedId);}
+    
+   
     this.getClientStatuses();
     this.getSkills();
   }
@@ -88,6 +94,10 @@ export class CandidatesDetailComponent implements OnInit {
     if (skillIndex !== -1) {
       skillIdsFormArray.at(skillIndex).setValue(isChecked);
     }
+  }
+
+  isFormValid(): boolean {
+    return this.forms.valid;
   }
   
   

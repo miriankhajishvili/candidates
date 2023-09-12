@@ -4,11 +4,11 @@
     <h1>{{currentCandidate?.name}}       {{currentCandidate?.surname}}</h1>
   <mat-form-field appearance="fill">
    
-    <input matInput placeholder="name"   formControlName="name">
+    <input matInput placeholder="Firstname"   formControlName="name">
   </mat-form-field><br>
   <mat-form-field appearance="fill">
    
-    <input matInput placeholder="Surname"  formControlName="surname">
+    <input matInput placeholder="Lastname"  formControlName="surname">
   </mat-form-field><br>
   <mat-form-field appearance="fill">
    
@@ -49,6 +49,6 @@
  
 
         </section>
-          <button [value]="" mat-raised-button color="primary">Submit</button>
+          <button [disabled]="!isFormValid()" [value]="" mat-raised-button color="primary">Submit</button>
        
 </form>
