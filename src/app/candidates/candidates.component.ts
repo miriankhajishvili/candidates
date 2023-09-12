@@ -1,9 +1,9 @@
 import { Component,  } from '@angular/core';
-import {  Router } from '@angular/router';
 import { CandidatesService } from '../features/services/candidates.service';
 import { of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteConfirmationDialogComponent } from '../shared/main-layout/detele/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { DeleteDialogComponent } from '../shared/delete-dialog/delete-dialog.component';
+
 
 
 
@@ -18,7 +18,7 @@ export class CandidatesComponent  {
 
   constructor( 
     private candidatesService: CandidatesService,
-    private dialog: MatDialog
+    public dialog : MatDialog
    ){}
 
 
@@ -27,14 +27,14 @@ export class CandidatesComponent  {
 
   
 
-  onDelete(id: string) {
+  Delete(id: string) {
     this.candidatesService.deleteCandidate(id).subscribe((res) => {
 
       this.candidatesService.getCandidates().subscribe((updatedCandidates) => {
      
         this.allCandidates$ = of(updatedCandidates);
       });
-  
+       DeleteDialogComponent
      
     });
 
@@ -42,20 +42,17 @@ export class CandidatesComponent  {
 
 
 
-  openDeleteConfirmationDialog(candidateId: string): void {
-    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
-      width: '250px',
-      data: { candidateId },
-    });
-  
+  onDelete(candidateId: string): void {
+    const dialogRef = this.dialog.open(DeleteDialogComponent);
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-      
-        this.onDelete(candidateId);
+       this.Delete(candidateId)
       }
     });
 
-}
 
+
+}
 
 }

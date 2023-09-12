@@ -9,18 +9,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { CandidatesDetailModule } from './candidates-detail/candidates-detail.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MainLayoutComponent } from './shared/main-layout/main-layout/main-layout.component';
 import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule} from '@angular/material/button';
 import { MatToolbarModule} from '@angular/material/toolbar';
 import { MatDialogModule} from '@angular/material/dialog';
-import { DeleteConfirmationDialogComponent } from './shared/main-layout/detele/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { MainLayoutComponent } from './shared/main-layout/main-layout.component';
+import { DeleteDialogComponent } from './shared/delete-dialog/delete-dialog.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainLayoutComponent,
-    DeleteConfirmationDialogComponent
+    DeleteDialogComponent
+    
 
     
   ],
@@ -37,7 +39,8 @@ import { DeleteConfirmationDialogComponent } from './shared/main-layout/detele/d
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatFormFieldModule
     
     
   ],
